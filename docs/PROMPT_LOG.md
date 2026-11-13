@@ -28,3 +28,17 @@ Tabel yang dibuat:
 
 Keputusan: status pakai `string` bukan `enum` agar nilai bisa ditambah tanpa `ALTER TABLE`.
 Hasil: `migrate:fresh` sukses, semua 9 migration status `Ran`.
+
+### feat: add Eloquent models and relationships
+
+| Model | Catatan |
+|---|---|
+| `User` | Tambah `phone`, `address` ke fillable. `role` dikecualikan (mass-assignment guard). Konstanta `ROLE_ADMIN/CUSTOMER`, method `isAdmin()`, `isCustomer()`. Relasi `orders`, `cartItems`. |
+| `Category` | fillable name/slug/description. Relasi `products`. |
+| `Product` | SoftDeletes. Accessor `formatted_price` (format Rupiah). Scope `active()`. Relasi `category`, `cartItems`, `orderItems`. |
+| `CartItem` | Accessor `subtotal` dihitung on-the-fly dari `quantity * product.price`. |
+| `Order` | Konstanta payment dan order status (string huruf kecil). `payment_status` dan `paid_at` dikecualikan fillable, hanya bisa diubah lewat `markPaymentStatus()` dan `markAsPaid()`. |
+| `OrderItem` | Relasi `product` pakai `withTrashed()` agar tidak putus saat produk di-soft delete. |
+| `Payment` | Cast `raw_notification` ke array, `transaction_time` ke datetime. |
+
+Hasil tinker: `App\Models\Category::count()` = 0 (belum ada seeder).
