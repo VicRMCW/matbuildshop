@@ -100,3 +100,20 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - `show()`: perlindungan integritas katalog publik dengan `abort(404)` jika `is_active == false`, eager loading relasi kategori.
 - Routes: `GET /` (`shop.home`) dan `GET /produk/{product:slug}` (`shop.products.show`) di luar middleware auth/role.
 - Views minimal sementara di `resources/views/shop/home.blade.php` dan `resources/views/shop/products/show.blade.php`.
+
+### feat: add catalog listing view
+- Dibuat `resources/css/shop.css` dengan komponen desain publik (wadah 1280px terpusat, typography Inter & Barlow Condensed via `@fontsource`, button min 48px).
+- Halaman katalog `resources/views/shop/home.blade.php` (dan `index.blade.php`): Form pencarian `q` dengan tombol Cari 48px, hidden input kategori aktif.
+- Filter kategori: sidebar 240px di desktop, chip scroll horizontal di layar kecil dengan jumlah produk per kategori dan status aktif.
+- Grid produk responsif: 2 kolom di mobile, 3 di tablet & desktop, jarak 20px.
+- Partial kartu produk `resources/views/shop/_card.blade.php`: rasio 4:3 object-cover / inline SVG placeholder, nama max 2 baris, kategori, harga Rp bold aksen, badge stok ("Stok habis" jika 0).
+- Pagination kustom bahasa Indonesia dengan tombol 40x40px.
+
+### feat: add product detail view
+- Halaman detail `resources/views/shop/products/show.blade.php` (dan `show.blade.php`): Breadcrumb navigasi (Katalog > Kategori > Nama Produk).
+- Layout 2 kolom di desktop (foto kiri 480px, detail kanan) dan 1 kolom di mobile.
+- Menampilkan foto produk (4:3) dengan `fetchpriority="high"`, judul 28px bold, kategori tautan filter, harga 28px aksen, status stok riil, serta deskripsi lengkap. Tombol keranjang tidak ditampilkan (sesuai tahap tugas).
+
+### feat: update public navbar
+- Layout `resources/views/layouts/app.blade.php`: Navbar sticky dengan brand MatbuildShop, tautan Katalog, Masuk & Daftar (untuk tamu) atau Nama Pelanggan & tombol Keluar POST @csrf (untuk user login), serta tautan Dashboard Admin untuk role admin.
+- Seluruh elemen interaktif memiliki tap target minimal 44px dan responsif di mobile.

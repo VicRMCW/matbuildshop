@@ -1,44 +1,99 @@
-@extends('layouts.app', ['title' => 'Katalog Toko - MatbuildShop'])
+@extends('layouts.app', ['title' => 'Katalog Bahan & Alat Bangunan - MatbuildShop'])
 
 @section('content')
-<div style="max-width: 1100px; margin: 0 auto;">
-    <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Katalog MatbuildShop</h1>
-    <p style="color: #666; margin-bottom: 1.5rem;">Daftar material dan perkakas bangunan.</p>
-
-    @if($q)
-        <p style="font-size: 0.95rem; margin-bottom: 1rem;">Hasil pencarian: <strong>{{ $q }}</strong></p>
-    @endif
-
-    <div style="margin-bottom: 1.5rem;">
-        <strong>Kategori:</strong>
-        <a href="{{ route('shop.home') }}" style="margin-right: 0.75rem; {{ empty($activeCategorySlug) ? 'font-weight: bold; color: var(--accent);' : '' }}">Semua</a>
-        @foreach($categories as $cat)
-            <a href="{{ route('shop.home', array_merge(request()->query(), ['kategori' => $cat->slug])) }}"
-               style="margin-right: 0.75rem; {{ $activeCategorySlug === $cat->slug ? 'font-weight: bold; color: var(--accent);' : '' }}">
-                {{ $cat->name }} ({{ $cat->products_count }})
-            </a>
-        @endforeach
+<div class="shop-container">
+    <div style="margin-bottom: 24px;">
+        <h1 style="font-size: 28px; font-weight: 700; color: var(--shop-text); margin-bottom: 6px; letter-spacing: -0.01em;">
+            Katalog Produk
+        </h1>
+        <p style="font-size: 16px; color: var(--shop-text-muted); margin: 0;">
+            Kebutuhan semen, besi, cat, pipa, dan perkakas konstruksi.
+        </p>
     </div>
 
-    <ul style="list-style: none; padding: 0;">
-        @forelse($products as $product)
-            <li style="padding: 0.75rem; border-bottom: 1px solid #DDD;">
-                <a href="{{ route('shop.products.show', $product) }}" style="font-size: 1.05rem; font-weight: 600; color: #1E1E1E; text-decoration: none;">
-                    {{ $product->name }}
-                </a>
-                <div style="font-size: 0.9rem; color: #666;">
-                    {{ $product->category?->name }} | {{ $product->formatted_price }} | Stok: {{ $product->stock }}
-                </div>
-            </li>
-        @empty
-            <li style="padding: 1.5rem; text-align: center; color: #888;">
-                Tidak ada produk ditemukan.
-            </li>
-        @endforelse
-    </ul>
+    {{-- Form Pencarian Publik --}}
+    <section class="shop-search-section" aria-label="Pencarian Produk">
+        <form method="GET" action="{{ route('shop.home') }}" class="shop-search-form">
+            @if(!empty($activeCategorySlug))
+                <input type="hidden" name="kategori" value="{{ $activeCategorySlug }}">
+            @endif
 
-    <div style="margin-top: 1.5rem;">
-        {{ $products->links() }}
+            <label for="search-input" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+                Cari material atau alat bangunan
+            </label>
+            <input type="text" id="search-input" name="q" value="{{ $q }}" placeholder="Cari nama semen, besi, atau perkakas..." class="shop-search-input">
+            <button type="submit" class="shop-btn shop-btn-primary">
+                Cari
+            </button>
+
+            @if($q)
+                <a href="{{ route('shop.home', array_filter(['kategori' => $activeCategorySlug])) }}" class="shop-btn shop-btn-secondary" style="padding: 0 16px;">
+                    Reset
+                </a>
+            @endif
+        </form>
+    </section>
+
+    {{-- Layout Samping: Filter Kategori & Grid Produk --}}
+    <div class="shop-layout">
+        {{-- Filter Kategori --}}
+        <aside class="shop-sidebar" aria-label="Filter Kategori">
+            <div style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--shop-text-muted); margin-bottom: 12px;">
+                Kategori
+            </div>
+            <div class="category-chip-list">
+                <a href="{{ route('shop.home', array_filter(['q' => $q])) }}" class="category-item {{ empty($activeCategorySlug) ? 'active' : '' }}">
+                    <span>Semua kategori</span>
+                </a>
+
+                @foreach ($categories as $cat)
+                    <a href="{{ route('shop.home', array_filter(['kategori' => $cat->slug, 'q' => $q])) }}" class="category-item {{ $activeCategorySlug === $cat->slug ? 'active' : '' }}">
+                        <span>{{ $cat->name }}</span>
+                        <span class="category-count">({{ $cat->products_count }})</span>
+                    </a>
+                @endforeach
+            </div>
+        </aside>
+
+        {{-- Area Hasil Produk --}}
+        <section class="shop-main-content" aria-label="Daftar Produk">
+            {{-- Ringkasan Hasil --}}
+            <div style="font-size: 15px; color: var(--shop-text-muted); margin-bottom: 16px;">
+                @if($q)
+                    Menampilkan hasil untuk <strong>"{{ $q }}"</strong>
+                    @if($activeCategorySlug)
+                        pada kategori <strong>{{ $categories->firstWhere('slug', $activeCategorySlug)?->name }}</strong>
+                    @endif
+                    ({{ $products->total() }} produk ditemukan)
+                @elseif($activeCategorySlug)
+                    Kategori: <strong>{{ $categories->firstWhere('slug', $activeCategorySlug)?->name }}</strong>
+                    ({{ $products->total() }} produk)
+                @else
+                    Semua Produk ({{ $products->total() }})
+                @endif
+            </div>
+
+            @if ($products->count() > 0)
+                <div class="product-grid">
+                    @foreach ($products as $product)
+                        @include('shop._card', ['product' => $product])
+                    @endforeach
+                </div>
+
+                {{-- Pagination Menggunakan View Terpusat --}}
+                <div style="margin-top: 24px;">
+                    {{ $products->links('vendor.pagination.custom') }}
+                </div>
+            @else
+                <div class="shop-empty-state">
+                    <h2 class="shop-empty-title">Produk tidak ditemukan</h2>
+                    <p class="shop-empty-text">Tidak ada produk yang sesuai dengan pencarian atau filter yang dipilih.</p>
+                    <a href="{{ route('shop.home') }}" class="shop-btn shop-btn-secondary">
+                        Reset pencarian
+                    </a>
+                </div>
+            @endif
+        </section>
     </div>
 </div>
 @endsection
