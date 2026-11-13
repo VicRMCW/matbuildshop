@@ -42,3 +42,15 @@ Hasil: `migrate:fresh` sukses, semua 9 migration status `Ran`.
 | `Payment` | Cast `raw_notification` ke array, `transaction_time` ke datetime. |
 
 Hasil tinker: `App\Models\Category::count()` = 0 (belum ada seeder).
+
+### feat: add database seeders
+
+| Seeder | Baris |
+|---|---|
+| `UserSeeder` | 3 (1 admin, 2 customer) |
+| `CategorySeeder` | 6 kategori |
+| `ProductSeeder` | 18 produk (3 per kategori) |
+
+Catatan: `role` diisi lewat `forceFill()` karena dikecualikan dari `$fillable`.
+Urutan `DatabaseSeeder`: users > categories > products (sesuai ketergantungan FK).
+Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 baris.
