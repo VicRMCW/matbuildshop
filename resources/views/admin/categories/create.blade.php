@@ -1,13 +1,18 @@
 @extends('layouts.admin', ['title' => 'Tambah Kategori - Admin MatbuildShop'])
 
 @section('content')
-<div style="max-width: 600px; margin: 0 auto;">
-    <div style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Tambah Kategori Baru</h1>
-        <p style="font-size: 0.9rem; color: #666;">Tambahkan klasifikasi material atau perkakas baru.</p>
+<div class="max-w-3xl">
+    <div class="mb-6 flex items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-neutral-900">Tambah Kategori Baru</h1>
+            <p class="text-sm text-neutral-600 mt-1">Tambahkan klasifikasi material atau perkakas baru.</p>
+        </div>
+        <a href="{{ route('admin.categories.index') }}" class="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
+            &larr; Kembali ke Daftar
+        </a>
     </div>
 
-    <div class="card">
+    <div class="bg-white border border-neutral-300 rounded-md p-6 sm:p-8">
         <form method="POST" action="{{ route('admin.categories.store') }}">
             @include('admin.categories._form')
         </form>

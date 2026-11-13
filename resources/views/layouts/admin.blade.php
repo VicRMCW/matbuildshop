@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Admin - MatbuildShop' }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
             --bg-body: #F2F1EF;
