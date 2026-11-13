@@ -1,40 +1,66 @@
 @extends('layouts.admin', ['title' => 'Dashboard - Admin MatbuildShop'])
 
 @section('content')
-<div style="margin-bottom: 1.5rem;">
-    <h1 style="font-size: 1.5rem; margin-bottom: 0.25rem;">Ringkasan Toko</h1>
-    <p style="font-size: 0.9rem; color: #666;">Statistik operasional data material dan perkakas bangunan.</p>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Ringkasan Toko</h1>
+        <p class="page-subtitle">Statistik operasional data material dan perkakas bangunan.</p>
+    </div>
 </div>
 
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-label">Total Produk Aktif</div>
-        <div class="stat-value">{{ $stats['total_products'] }}</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-text-muted); margin-bottom: 8px;">
+            Total Produk Aktif
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-text); line-height: 1;">
+            {{ $stats['total_products'] }}
+        </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Total Kategori</div>
-        <div class="stat-value">{{ $stats['total_categories'] }}</div>
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-text-muted); margin-bottom: 8px;">
+            Total Kategori
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-text); line-height: 1;">
+            {{ $stats['total_categories'] }}
+        </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Total Pelanggan</div>
-        <div class="stat-value">{{ $stats['total_customers'] }}</div>
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-text-muted); margin-bottom: 8px;">
+            Total Pelanggan
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-text); line-height: 1;">
+            {{ $stats['total_customers'] }}
+        </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Total Pesanan</div>
-        <div class="stat-value">{{ $stats['total_orders'] }}</div>
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-text-muted); margin-bottom: 8px;">
+            Total Pesanan
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-text); line-height: 1;">
+            {{ $stats['total_orders'] }}
+        </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Menunggu Pembayaran</div>
-        <div class="stat-value accent">{{ $stats['orders_pending'] }}</div>
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-accent); margin-bottom: 8px;">
+            Menunggu Pembayaran
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-accent); line-height: 1;">
+            {{ $stats['orders_pending'] }}
+        </div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-label">Pesanan Terbayar</div>
-        <div class="stat-value">{{ $stats['orders_paid'] }}</div>
+    <div style="background: var(--adm-surface); border: 1px solid var(--adm-border); border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--adm-text-muted); margin-bottom: 8px;">
+            Pesanan Terbayar
+        </div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--adm-text); line-height: 1;">
+            {{ $stats['orders_paid'] }}
+        </div>
     </div>
 </div>
 @endsection
