@@ -159,6 +159,7 @@
     </header>
 
     <main>
+        @include('partials.flash')
         @yield('content')
     </main>
 </body>

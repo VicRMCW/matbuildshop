@@ -69,3 +69,10 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - `ProfileController` untuk `GET /profile` dan `PUT /profile`, hanya mengubah instance `Auth::user()`.
 - Validasi nama required, phone/address nullable, dan ganti password opsional dengan `current_password`.
 - View `profile/edit.blade.php` sesuai aturan visual `DESIGN.md`.
+
+### feat: add admin dashboard
+- Buat `Admin\DashboardController` menggantikan closure `admin.dashboard`.
+- Query 6 statistik real dari database: total produk (tanpa soft-deleted), total kategori, total pelanggan (`role = 'customer'`), total pesanan, pesanan pending (`Order::PAYMENT_PENDING`), pesanan paid (`Order::PAYMENT_PAID`).
+- Perbarui `resources/views/layouts/admin.blade.php` dengan navigasi sidebar: Dashboard, Kategori, Produk, Pesanan (placeholder) dan penanda menu aktif via `request()->routeIs(...)`.
+- Buat partial flash message di `resources/views/partials/flash.blade.php` (menangani `status`, `success`, `error`, `$errors->any()`) dan pasang di layout app maupun admin.
+- View `resources/views/admin/dashboard.blade.php` menampilkan 6 kartu statistik rapi sesuai pedoman `DESIGN.md`.

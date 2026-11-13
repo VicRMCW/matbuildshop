@@ -28,6 +28,7 @@
             display: flex;
             flex-direction: column;
             padding: 1.5rem 1rem;
+            flex-shrink: 0;
         }
         aside .brand {
             font-size: 1.15rem;
@@ -41,24 +42,31 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.35rem;
         }
         aside nav a {
             color: #D6D3D1;
             text-decoration: none;
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem 0.75rem;
             border-radius: 4px;
             display: block;
             font-size: 0.9rem;
+            transition: background-color 150ms ease, color 150ms ease;
         }
-        aside nav a:hover, aside nav a.active {
+        aside nav a:hover {
             background: #3E3E3E;
             color: #FFFFFF;
+        }
+        aside nav a.active {
+            background: var(--accent);
+            color: #FFFFFF;
+            font-weight: 600;
         }
         .admin-main {
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
         .admin-header {
             background: var(--surface);
@@ -81,6 +89,10 @@
             border: 1px solid transparent;
             font-size: 0.9rem;
             cursor: pointer;
+            transition: background-color 150ms ease;
+        }
+        .btn:hover {
+            background: var(--accent-hover);
         }
         .btn-secondary {
             background: transparent;
@@ -96,6 +108,33 @@
             border-radius: 6px;
             padding: 1.5rem;
         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .stat-value {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        .stat-value.accent {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -103,8 +142,21 @@
         <a href="{{ route('admin.dashboard') }}" class="brand">Matbuild Admin</a>
         <nav>
             <ul>
-                <li><a href="{{ route('admin.dashboard') }}" class="active">Dashboard</a></li>
-                <li><a href="{{ route('shop.home') }}">Lihat Toko</a></li>
+                <li>
+                    <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="{{ Route::has('admin.categories.index') ? route('admin.categories.index') : '#' }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Kategori</a>
+                </li>
+                <li>
+                    <a href="{{ Route::has('admin.products.index') ? route('admin.products.index') : '#' }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">Produk</a>
+                </li>
+                <li>
+                    <a href="{{ Route::has('admin.orders.index') ? route('admin.orders.index') : '#' }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Pesanan</a>
+                </li>
+                <li style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #3E3E3E;">
+                    <a href="{{ route('shop.home') }}">Lihat Toko</a>
+                </li>
             </ul>
         </nav>
     </aside>
@@ -122,6 +174,7 @@
         </header>
 
         <section class="admin-content">
+            @include('partials.flash')
             @yield('content')
         </section>
     </div>
