@@ -54,3 +54,18 @@ Hasil tinker: `App\Models\Category::count()` = 0 (belum ada seeder).
 Catatan: `role` diisi lewat `forceFill()` karena dikecualikan dari `$fillable`.
 Urutan `DatabaseSeeder`: users > categories > products (sesuai ketergantungan FK).
 Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 baris.
+
+### feat: add authentication
+- Controller auth manual tanpa starter kit: `RegisterController` (role customer diset eksplisit, password hashed, autologin) dan `LoginController` (`Auth::attempt`, session regenerate, pesan error netral, role-based redirect, POST logout).
+- View Blade: `layouts/app.blade.php`, `auth/login.blade.php`, `auth/register.blade.php`, dan `shop/home.blade.php`.
+- Throttle `throttle:5,1` diterapkan pada POST `/login`.
+
+### feat: add role middleware
+- Middleware `EnsureUserHasRole` dengan proteksi redirect ke login bila belum auth, dan `abort(403)` jika role tidak sesuai.
+- Registrasi alias `'role'` di `bootstrap/app.php` via `$middleware->alias(...)`.
+- Area admin dilindungi `['auth', 'role:admin']`, layout `layouts/admin.blade.php`, dan placeholder view `admin.dashboard`.
+
+### feat: add customer profile
+- `ProfileController` untuk `GET /profile` dan `PUT /profile`, hanya mengubah instance `Auth::user()`.
+- Validasi nama required, phone/address nullable, dan ganti password opsional dengan `current_password`.
+- View `profile/edit.blade.php` sesuai aturan visual `DESIGN.md`.
