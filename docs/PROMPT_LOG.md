@@ -76,3 +76,11 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - Perbarui `resources/views/layouts/admin.blade.php` dengan navigasi sidebar: Dashboard, Kategori, Produk, Pesanan (placeholder) dan penanda menu aktif via `request()->routeIs(...)`.
 - Buat partial flash message di `resources/views/partials/flash.blade.php` (menangani `status`, `success`, `error`, `$errors->any()`) dan pasang di layout app maupun admin.
 - View `resources/views/admin/dashboard.blade.php` menampilkan 6 kartu statistik rapi sesuai pedoman `DESIGN.md`.
+
+### feat: add category management
+- Resource controller `Admin\CategoryController` (except `show`) dengan route `admin.categories.*`.
+- Form Requests: `StoreCategoryRequest` dan `UpdateCategoryRequest` (validasi name required, max 100, unique ignore self; description max 500).
+- Penanganan slug otomatis via `Str::slug` yang menjamin keunikan dengan penambahan suffix angka berurutan jika ada tabrakan. Slug hanya diperbarui saat nama berubah.
+- Listing index dengan `withCount('products')` untuk eliminasi query N+1, pagination 10 item.
+- Proteksi `destroy()`: cek `products()->withTrashed()->exists()`; tolak penghapusan bila ada produk (termasuk yang di-soft-delete) dengan pesan error spesifik.
+- Blade views: `index.blade.php`, `create.blade.php`, `edit.blade.php`, dan partial form `_form.blade.php`.
