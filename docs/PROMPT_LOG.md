@@ -93,3 +93,10 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - Halaman index produk dengan eager loading `with('category')`, filter pencarian nama sederhana via query string, format harga Rupiah via accessor `formatted_price`, dan pagination 10 per halaman.
 - Placeholder visual menggunakan inline SVG jika produk tidak memiliki gambar (tanpa request eksternal).
 - Blade views: `admin/products/index.blade.php`, `create.blade.php`, `edit.blade.php`, serta partial `_form.blade.php` lengkap dengan pratinjau gambar baru menggunakan vanilla JavaScript FileReader.
+
+### feat: add public catalog controller and routes
+- Controller publik `ShopController` dengan method `index()` dan `show()`.
+- `index()`: query dasar `Product::active()->with('category')`, pencarian `q` pada nama dan deskripsi via parameter binding `when()` yang ditrim dan dibatasi 100 karakter, filter kategori slug via `whereHas()` tanpa error jika slug tidak valid, sorting terbaru `latest('id')`, pagination 12 item dengan `withQueryString()`. Mengirim koleksi kategori berurut nama beserta `withCount` produk aktif.
+- `show()`: perlindungan integritas katalog publik dengan `abort(404)` jika `is_active == false`, eager loading relasi kategori.
+- Routes: `GET /` (`shop.home`) dan `GET /produk/{product:slug}` (`shop.products.show`) di luar middleware auth/role.
+- Views minimal sementara di `resources/views/shop/home.blade.php` dan `resources/views/shop/products/show.blade.php`.

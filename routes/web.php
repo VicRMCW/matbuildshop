@@ -3,12 +3,12 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-// 1. Publik: Katalog & halaman utama toko
-Route::get('/', function () {
-    return view('shop.home');
-})->name('shop.home');
+// 1. Publik: Katalog & halaman detail produk toko
+Route::get('/', [ShopController::class, 'index'])->name('shop.home');
+Route::get('/produk/{product:slug}', [ShopController::class, 'show'])->name('shop.products.show');
 
 // 2. Guest: Autentikasi pendaftaran dan masuk (khusus pengguna belum login)
 Route::middleware('guest')->group(function () {
