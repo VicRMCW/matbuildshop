@@ -42,7 +42,7 @@
         </form>
 
         <p style="font-size: 0.85rem; margin-top: 1.5rem; text-align: center; color: #555;">
-            Sudah punya akun? <a href="{{ route('login') }}" style="color: var(--accent);">Masuk di sini</a>
+            Sudah punya akun? <a href="{{ route('login') }}" style="color: var(--shop-accent);">Masuk di sini</a>
         </p>
     </div>
 </div>

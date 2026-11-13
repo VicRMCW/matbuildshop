@@ -1,0 +1,242 @@
+<?php
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
+use Illuminate\Support\Facades\Route;
+
+// 1. Publik: Katalog & halaman detail produk toko
+Route::get('/', [ShopController::class, 'index'])->name('shop.home');
+Route::get('/produk/{product:slug}', [ShopController::class, 'show'])->name('shop.products.show');
+
+// 2. Guest: Autentikasi pendaftaran dan masuk (khusus pengguna belum login)
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+    Route::get('/login', [LoginController::class, 'showForm'])->name('login');
+    // Batasi percobaan login guna mencegah brute-force attack.
+    Route::post('/login', [LoginController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('login.store');
+});
+
+// 3. Auth: Sesi aktif semua role
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
+
+// 4. Customer: Area khusus pelanggan
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Keranjang belanja
+    Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
+    Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
+
+
+// 5. Admin: Area khusus administrator toko
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->except('show');
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->except('show');
+    });
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Order extends Model
+{
+    const PAYMENT_PENDING  = 'pending';
+    const PAYMENT_PAID     = 'paid';
+    const PAYMENT_FAILED   = 'failed';
+    const PAYMENT_EXPIRED  = 'expired';
+
+    const ORDER_PENDING    = 'pending';
+    const ORDER_PROCESSING = 'processing';
+    const ORDER_SHIPPED    = 'shipped';
+    const ORDER_COMPLETED  = 'completed';
+    const ORDER_CANCELLED  = 'cancelled';
+
+    // payment_status dan paid_at dikecualikan dari fillable agar hanya bisa diubah
+    // lewat markPaymentStatus() dan markAsPaid(), bukan lewat mass assignment.
+    protected $fillable = [
+        'user_id',
+        'order_code',
+        'recipient_name',
+        'phone',
+        'shipping_address',
+        'total_amount',
+        'order_status',
+        'snap_token',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'paid_at' => 'datetime',
+        ];
+    }
+
+    public function markPaymentStatus(string $status): void
+    {
+        $this->forceFill(['payment_status' => $status])->save();
+    }
+
+    public function markAsPaid(): void
+    {
+        $this->forceFill([
+            'payment_status' => self::PAYMENT_PAID,
+            'paid_at'        => now(),
+        ])->save();
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->payment_status === self::PAYMENT_PAID;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+}
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class CartItem extends Model
+{
+    protected $fillable = ['user_id', 'product_id', 'quantity'];
+
+    // Subtotal dihitung on-the-fly; tidak disimpan di DB agar tidak drift dengan harga produk.
+    protected function subtotal(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->quantity * ($this->product?->price ?? 0),
+        );
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+}
+app/Http/Controllers:
+[0m[01;34mAdmin[0m/
+[01;34mAuth[0m/
+CartController.php
+Controller.php
+ProfileController.php
+ShopController.php
+
+app/Http/Controllers/Admin:
+CategoryController.php
+DashboardController.php
+ProductController.php
+
+app/Http/Controllers/Auth:
+LoginController.php
+RegisterController.php
+
+resources/views:
+[01;34madmin[0m/
+[01;34mauth[0m/
+[01;34mcart[0m/
+[01;34mlayouts[0m/
+[01;34mpartials[0m/
+[01;34mprofile[0m/
+[01;34mshop[0m/
+[01;34mvendor[0m/
+welcome.blade.php
+
+resources/views/admin:
+[01;34mcategories[0m/
+dashboard.blade.php
+[01;34mproducts[0m/
+
+resources/views/admin/categories:
+_form.blade.php
+create.blade.php
+edit.blade.php
+index.blade.php
+
+resources/views/admin/products:
+_form.blade.php
+create.blade.php
+edit.blade.php
+index.blade.php
+
+resources/views/auth:
+login.blade.php
+register.blade.php
+
+resources/views/cart:
+index.blade.php
+
+resources/views/layouts:
+admin.blade.php
+app.blade.php
+
+resources/views/partials:
+flash.blade.php
+
+resources/views/profile:
+edit.blade.php
+
+resources/views/shop:
+_card.blade.php
+home.blade.php
+index.blade.php
+[01;34mproducts[0m/
+show.blade.php
+
+resources/views/shop/products:
+show.blade.php
+
+resources/views/vendor:
+[01;34mpagination[0m/
+
+resources/views/vendor/pagination:
+bootstrap-3.blade.php
+bootstrap-4.blade.php
+bootstrap-5.blade.php
+custom.blade.php
+semantic-ui.blade.php
+simple-bootstrap-3.blade.php
+simple-bootstrap-4.blade.php
+simple-bootstrap-5.blade.php
+simple-tailwind.blade.php
+tailwind.blade.php
