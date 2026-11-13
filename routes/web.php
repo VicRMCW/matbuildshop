@@ -40,4 +40,5 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->except('show');
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->except('show');
     });

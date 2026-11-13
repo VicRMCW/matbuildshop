@@ -84,3 +84,12 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - Listing index dengan `withCount('products')` untuk eliminasi query N+1, pagination 10 item.
 - Proteksi `destroy()`: cek `products()->withTrashed()->exists()`; tolak penghapusan bila ada produk (termasuk yang di-soft-delete) dengan pesan error spesifik.
 - Blade views: `index.blade.php`, `create.blade.php`, `edit.blade.php`, dan partial form `_form.blade.php`.
+
+### feat: add product management
+- Resource controller `Admin\ProductController` (except `show`) dengan route `admin.products.*`.
+- Form Requests: `StoreProductRequest` dan `UpdateProductRequest` dengan normalisasi checkbox `is_active` menjadi boolean di `prepareForValidation()`.
+- Upload gambar produk menggunakan disk `public` (`products/...`). Hapus file lama via `Storage::disk('public')->delete()` saat update jika berkas diganti baru.
+- Soft delete pada `destroy()` tanpa menghapus gambar disk guna menjaga data riwayat transaksi order.
+- Halaman index produk dengan eager loading `with('category')`, filter pencarian nama sederhana via query string, format harga Rupiah via accessor `formatted_price`, dan pagination 10 per halaman.
+- Placeholder visual menggunakan inline SVG jika produk tidak memiliki gambar (tanpa request eksternal).
+- Blade views: `admin/products/index.blade.php`, `create.blade.php`, `edit.blade.php`, serta partial `_form.blade.php` lengkap dengan pratinjau gambar baru menggunakan vanilla JavaScript FileReader.
