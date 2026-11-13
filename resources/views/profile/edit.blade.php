@@ -69,7 +69,7 @@
                 <input type="password" id="password_confirmation" name="password_confirmation">
             </div>
 
-            <button type="submit" class="btn" style="margin-top: 0.5rem;">Simpan Perubahan</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">Simpan Perubahan</button>
         </form>
     </div>
 </div>

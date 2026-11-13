@@ -58,6 +58,31 @@
                 @endif
             </div>
 
+                        @auth
+                @if (auth()->user()->isCustomer())
+                    @if ($product->stock > 0)
+                        <form method="POST" action="{{ route('cart.store') }}" class="add-to-cart">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                            <div class="form-group">
+                                <label for="quantity">Jumlah</label>
+                                <input type="number" id="quantity" name="quantity" value="1"
+                                       min="1" max="{{ $product->stock }}" required>
+                            </div>
+
+                            <button type="submit" class="shop-btn shop-btn-primary">Tambah ke keranjang</button>
+                        </form>
+                    @endif
+                @else
+                    <p class="add-to-cart-note">Akun admin tidak digunakan untuk berbelanja.</p>
+                @endif
+            @else
+                <div class="add-to-cart">
+                    <a href="{{ route('login') }}" class="shop-btn shop-btn-primary">Masuk untuk membeli</a>
+                </div>
+            @endauth
+            
             <div class="product-detail-desc">
                 <h2 style="font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--shop-text); margin-bottom: 8px;">
                     Deskripsi Produk

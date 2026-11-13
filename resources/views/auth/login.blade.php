@@ -30,11 +30,11 @@
                 <label for="remember" style="margin-bottom: 0; font-weight: normal; cursor: pointer;">Ingat sesi saya</label>
             </div>
 
-            <button type="submit" class="btn" style="width: 100%;">Masuk</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Masuk</button>
         </form>
 
         <p style="font-size: 0.85rem; margin-top: 1.5rem; text-align: center; color: #555;">
-            Belum punya akun? <a href="{{ route('register') }}" style="color: var(--accent);">Daftar sekarang</a>
+            Belum punya akun? <a href="{{ route('register') }}" style="color: var(--shop-accent);">Daftar sekarang</a>
         </p>
     </div>
 </div>

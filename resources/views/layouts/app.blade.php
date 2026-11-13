@@ -43,6 +43,11 @@
                             </li>
                         @else
                             <li>
+                                <a href="{{ route('cart.index') }}" class="shop-nav-link {{ request()->routeIs('cart.*') ? 'active' : '' }}">
+                                    Keranjang ({{ auth()->user()->cartItems()->count() }})
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('profile.edit') }}" class="shop-nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                                     {{ auth()->user()->name }}
                                 </a>
