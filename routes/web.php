@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
-    
+
         // Checkout dan pesanan
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
@@ -57,3 +58,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->except('show');
         Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->except('show');
     });
+
+// Webhook Midtrans: dipanggil server Midtrans, jadi tanpa login dan tanpa CSRF.
+// Keamanannya lewat verifikasi signature_key di controller.
+Route::post('/midtrans/notification', [MidtransNotificationController::class, 'handle'])
+    ->name('midtrans.notification'); 

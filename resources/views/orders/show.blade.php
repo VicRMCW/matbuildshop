@@ -62,9 +62,37 @@
         </table>
     </div>
 
-    @if ($order->payment_status === 'pending')
-        {{-- Tombol bayar Midtrans dipasang di sini pada Tahap 9. --}}
-        <p class="order-payment-note">Pesanan ini menunggu pembayaran.</p>
+       @if ($order->payment_status === 'pending')
+        @if ($snapToken)
+            <div class="order-payment">
+                <p>Selesaikan pembayaran lewat Midtrans. Status akan diperbarui otomatis setelah pembayaranmu dikonfirmasi.</p>
+                <button type="button" id="pay-button" class="shop-btn shop-btn-primary">Bayar sekarang</button>
+            </div>
+
+            <script src="{{ config('midtrans.snap_js_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
+            <script>
+                // Callback hanya memuat ulang halaman; status asli diverifikasi server lewat Midtrans.
+                document.getElementById('pay-button').addEventListener('click', function () {
+                    snap.pay(@json($snapToken), {
+                        onSuccess: function () { window.location.reload(); },
+                        onPending: function () { window.location.reload(); },
+                        onError: function () { window.location.reload(); },
+                        onClose: function () {}
+                    });
+                });
+            </script>
+        @else
+            <p class="order-payment-note">Pembayaran belum dapat disiapkan. Muat ulang halaman ini.</p>
+        @endif
+    @elseif ($order->payment_status === 'paid')
+        <p class="order-payment-note order-payment-note--ok">
+            Pembayaran diterima{{ $order->paid_at ? ' pada ' . \Carbon\Carbon::parse($order->paid_at)->format('d/m/Y H:i') : '' }}.
+        </p>
+    @else
+        <p class="order-payment-note order-payment-note--bad">
+            Pembayaran {{ strtolower($order->payment_status_label) }}. Pesanan ini dibatalkan dan stok dikembalikan.
+            Silakan buat pesanan baru dari katalog.
+        </p>
     @endif
 
     <p><a href="{{ route('shop.home') }}" class="checkout-back">Kembali ke katalog</a></p>

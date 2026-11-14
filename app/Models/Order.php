@@ -39,6 +39,7 @@ class Order extends Model
         ];
     }
 
+    // Satu-satunya jalan mengubah status pembayaran; dipanggil hanya dari PaymentService.
     public function markPaymentStatus(string $status): void
     {
         $this->forceFill(['payment_status' => $status])->save();
@@ -47,8 +48,8 @@ class Order extends Model
     public function markAsPaid(): void
     {
         $this->forceFill([
-            'payment_status' => self::PAYMENT_PAID,
-            'paid_at'        => now(),
+            'payment_status' => 'paid',
+            'paid_at' => $this->paid_at ?? now(),
         ])->save();
     }
 
