@@ -898,3 +898,139 @@
   font-size: 0.875rem;
   color: #b42318;
 }
+/* Checkout dan detail pesanan */
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.checkout-items {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--shop-border);
+}
+
+.checkout-item-name {
+  margin: 0 0 2px;
+  font-weight: 600;
+}
+
+.checkout-item-subtotal {
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.checkout-note {
+  margin: 12px 0 0;
+  font-size: 0.875rem;
+  color: var(--shop-text-muted);
+}
+
+.checkout-back {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--shop-text);
+}
+
+.order-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.order-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.order-badge--pending {
+  background: #FFF4E0;
+  color: #7A4A00;
+}
+
+.order-badge--processing,
+.order-badge--shipped {
+  background: #E8EEF7;
+  color: #1F3A5F;
+}
+
+.order-badge--paid,
+.order-badge--completed {
+  background: #E6F4EA;
+  color: #0F5132;
+}
+
+.order-badge--failed,
+.order-badge--expired,
+.order-badge--cancelled {
+  background: var(--shop-danger-bg, #FDECEA);
+  color: var(--shop-danger, #B42318);
+}
+
+.order-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .order-info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.order-line {
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+
+.order-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--shop-surface);
+  border: 1px solid var(--shop-border);
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--shop-border);
+}
+
+.order-table th {
+  font-size: 0.875rem;
+  background: var(--shop-border-light);
+}
+
+.order-table tfoot td {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.order-payment-note {
+  padding: 12px 16px;
+  background: #FFF4E0;
+  color: #7A4A00;
+  border-radius: 6px;
+}

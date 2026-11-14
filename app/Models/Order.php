@@ -57,6 +57,30 @@ class Order extends Model
         return $this->payment_status === self::PAYMENT_PAID;
     }
 
+    // Label berbahasa Indonesia agar view tidak menulis ulang pemetaan ini.
+    public function getPaymentStatusLabelAttribute(): string
+    {
+        return match ($this->payment_status) {
+            'pending' => 'Menunggu pembayaran',
+            'paid'    => 'Dibayar',
+            'failed'  => 'Gagal',
+            'expired' => 'Kedaluwarsa',
+            default   => ucfirst((string) $this->payment_status),
+        };
+    }
+
+    public function getOrderStatusLabelAttribute(): string
+    {
+        return match ($this->order_status) {
+            'pending'    => 'Menunggu diproses',
+            'processing' => 'Diproses',
+            'shipped'    => 'Dikirim',
+            'completed'  => 'Selesai',
+            'cancelled'  => 'Dibatalkan',
+            default      => ucfirst((string) $this->order_status),
+        };
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

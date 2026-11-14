@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -38,6 +40,11 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
+    
+        // Checkout dan pesanan
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/pesanan/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 
