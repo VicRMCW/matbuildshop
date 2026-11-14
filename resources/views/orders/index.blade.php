@@ -12,7 +12,7 @@
         <div class="shop-empty-state">
             <h2 class="shop-empty-title">Belum ada pesanan</h2>
             <p class="shop-empty-text">Pesanan yang kamu buat akan muncul di sini.</p>
-            <a href="{{ route('shop.home') }}" class="shop-btn shop-btn-primary">Lihat katalog</a>
+            <a href="{{ route('shop.catalog') }}" class="shop-btn shop-btn-primary">Lihat katalog</a>
         </div>
     @else
         <div class="order-table-wrap">

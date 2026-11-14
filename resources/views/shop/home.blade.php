@@ -13,7 +13,7 @@
 
     {{-- Form Pencarian Publik --}}
     <section class="shop-search-section" aria-label="Pencarian Produk">
-        <form method="GET" action="{{ route('shop.home') }}" class="shop-search-form">
+        <form method="GET" action="{{ route('shop.catalog') }}" class="shop-search-form">
             @if(!empty($activeCategorySlug))
                 <input type="hidden" name="kategori" value="{{ $activeCategorySlug }}">
             @endif
@@ -27,7 +27,7 @@
             </button>
 
             @if($q)
-                <a href="{{ route('shop.home', array_filter(['kategori' => $activeCategorySlug])) }}" class="shop-btn shop-btn-secondary" style="padding: 0 16px;">
+                <a href="{{ route('shop.catalog', array_filter(['kategori' => $activeCategorySlug])) }}" class="shop-btn shop-btn-secondary" style="padding: 0 16px;">
                     Reset
                 </a>
             @endif
@@ -42,12 +42,12 @@
                 Kategori
             </div>
             <div class="category-chip-list">
-                <a href="{{ route('shop.home', array_filter(['q' => $q])) }}" class="category-item {{ empty($activeCategorySlug) ? 'active' : '' }}">
+                <a href="{{ route('shop.catalog', array_filter(['q' => $q])) }}" class="category-item {{ empty($activeCategorySlug) ? 'active' : '' }}">
                     <span>Semua kategori</span>
                 </a>
 
                 @foreach ($categories as $cat)
-                    <a href="{{ route('shop.home', array_filter(['kategori' => $cat->slug, 'q' => $q])) }}" class="category-item {{ $activeCategorySlug === $cat->slug ? 'active' : '' }}">
+                    <a href="{{ route('shop.catalog', array_filter(['kategori' => $cat->slug, 'q' => $q])) }}" class="category-item {{ $activeCategorySlug === $cat->slug ? 'active' : '' }}">
                         <span>{{ $cat->name }}</span>
                         <span class="category-count">({{ $cat->products_count }})</span>
                     </a>
@@ -88,7 +88,7 @@
                 <div class="shop-empty-state">
                     <h2 class="shop-empty-title">Produk tidak ditemukan</h2>
                     <p class="shop-empty-text">Tidak ada produk yang sesuai dengan pencarian atau filter yang dipilih.</p>
-                    <a href="{{ route('shop.home') }}" class="shop-btn shop-btn-secondary">
+                    <a href="{{ route('shop.catalog') }}" class="shop-btn shop-btn-secondary">
                         Reset pencarian
                     </a>
                 </div>

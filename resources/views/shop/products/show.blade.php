@@ -4,10 +4,10 @@
 <div class="shop-container">
     {{-- Breadcrumb Navigasi: Katalog > Kategori > Nama Produk --}}
     <nav class="shop-breadcrumb" aria-label="Breadcrumb">
-        <a href="{{ route('shop.home') }}">Katalog</a>
+        <a href="{{ route('shop.catalog') }}">Katalog</a>
         <span class="shop-breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
         @if ($product->category)
-            <a href="{{ route('shop.home', ['kategori' => $product->category->slug]) }}">
+            <a href="{{ route('shop.catalog', ['kategori' => $product->category->slug]) }}">
                 {{ $product->category->name }}
             </a>
             <span class="shop-breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
@@ -37,7 +37,7 @@
             <div class="product-detail-category">
                 Kategori:
                 @if ($product->category)
-                    <a href="{{ route('shop.home', ['kategori' => $product->category->slug]) }}" style="color: var(--shop-accent); text-decoration: none; font-weight: 500;">
+                    <a href="{{ route('shop.catalog', ['kategori' => $product->category->slug]) }}" style="color: var(--shop-accent); text-decoration: none; font-weight: 500;">
                         {{ $product->category->name }}
                     </a>
                 @else

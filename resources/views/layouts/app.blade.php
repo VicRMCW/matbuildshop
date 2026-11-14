@@ -29,7 +29,7 @@
             <nav aria-label="Navigasi Utama">
                 <ul class="shop-nav-menu">
                     <li>
-                        <a href="{{ route('shop.home') }}" class="shop-nav-link {{ request()->routeIs('shop.*') ? 'active' : '' }}">
+                        <a href="{{ route('shop.catalog') }}" class="shop-nav-link {{ request()->routeIs('shop.catalog') ? 'active' : '' }}">
                             Katalog
                         </a>
                     </li>

@@ -117,3 +117,9 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 ### feat: update public navbar
 - Layout `resources/views/layouts/app.blade.php`: Navbar sticky dengan brand MatbuildShop, tautan Katalog, Masuk & Daftar (untuk tamu) atau Nama Pelanggan & tombol Keluar POST @csrf (untuk user login), serta tautan Dashboard Admin untuk role admin.
 - Seluruh elemen interaktif memiliki tap target minimal 44px dan responsif di mobile.
+
+### feat: add landing controller and move catalog to /katalog
+- `ShopController`: Tambahkan method `home()` yang merender view `shop.landing` dengan variabel `$categories` (kategori urut nama, `products_count` aktif via `withCount`, dan `cover_image` memakai subquery `addSelect` dari produk aktif terbaru yang memiliki gambar) dan `$latestProducts` (8 produk aktif terbaru eager load `category`).
+- Routes `routes/web.php`: `GET /` diarahkan ke `ShopController@home` dengan nama `shop.home`, dan `GET /katalog` diarahkan ke `ShopController@index` dengan nama `shop.catalog`.
+- Dibuat view sementara `resources/views/shop/landing.blade.php` bertuliskan "Beranda" untuk pengujian.
+- Migrasi tautan di seluruh project: tautan katalog, form pencarian, filter kategori, breadcrumb katalog, dan tombol "Lihat katalog" diganti ke `shop.catalog`. Tautan logo brand, redirect login/register, dan error redirect dipertahankan ke `shop.home`.

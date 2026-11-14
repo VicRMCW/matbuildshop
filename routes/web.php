@@ -11,8 +11,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-// 1. Publik: Katalog & halaman detail produk toko
-Route::get('/', [ShopController::class, 'index'])->name('shop.home');
+// 1. Publik: Beranda, Katalog & halaman detail produk toko
+Route::get('/', [ShopController::class, 'home'])->name('shop.home');
+Route::get('/katalog', [ShopController::class, 'index'])->name('shop.catalog');
 Route::get('/produk/{product:slug}', [ShopController::class, 'show'])->name('shop.products.show');
 
 // 2. Guest: Autentikasi pendaftaran dan masuk (khusus pengguna belum login)
@@ -46,10 +47,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         // Checkout dan pesanan
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-        // Beli sekarang (tanpa keranjang)
-    Route::post('/beli-langsung', [CheckoutController::class, 'startDirect'])->name('checkout.direct.start');
-    Route::get('/checkout/langsung', [CheckoutController::class, 'direct'])->name('checkout.direct');
-    Route::post('/checkout/langsung', [CheckoutController::class, 'storeDirect'])->name('checkout.direct.store');
     Route::get('/pesanan/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pesanan/{order:order_code}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');

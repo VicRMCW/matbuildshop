@@ -18,7 +18,7 @@
         <div class="shop-empty-state">
             <h2 class="shop-empty-title">Keranjangmu masih kosong</h2>
             <p class="shop-empty-text">Pilih barang dari katalog untuk mulai berbelanja.</p>
-            <a href="{{ route('shop.home') }}" class="shop-btn shop-btn-primary">Lihat katalog</a>
+            <a href="{{ route('shop.catalog') }}" class="shop-btn shop-btn-primary">Lihat katalog</a>
         </div>
     @else
         <div class="cart-layout">

@@ -9,6 +9,35 @@ use Illuminate\View\View;
 
 class ShopController extends Controller
 {
+    public function home(): View
+    {
+        // Subquery addSelect dipakai agar limit(1) berlaku per baris kategori di SQL,
+        // karena with(['products' => fn($q) => $q->limit(1)]) pada Eloquent akan membatasi total produk keseluruhan (bukan per kategori).
+        $categories = Category::query()
+            ->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->addSelect([
+                'cover_image' => Product::query()
+                    ->select('image')
+                    ->whereColumn('category_id', 'categories.id')
+                    ->where('is_active', true)
+                    ->whereNotNull('image')
+                    ->latest()
+                    ->limit(1),
+            ])
+            ->orderBy('name')
+            ->get();
+
+        $latestProducts = Product::active()
+            ->with('category')
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('shop.landing', compact('categories', 'latestProducts'));
+    }
+
     public function index(Request $request): View
     {
         // Sanitasi parameter pencarian untuk mencegah pola wildcard berlebihan dan membatasi beban LIKE query.
