@@ -70,7 +70,7 @@
                     <a href="{{ Route::has('admin.products.index') ? route('admin.products.index') : '#' }}" class="sidebar-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">Produk</a>
                 </li>
                 <li>
-                    <a href="{{ Route::has('admin.orders.index') ? route('admin.orders.index') : '#' }}" class="sidebar-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Pesanan</a>
+                    <a href="{{ route('admin.orders.index') }}" class="sidebar-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Pesanan</a>
                 </li>
                 <li style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #3E3E3E;">
                     <a href="{{ route('shop.home') }}" class="sidebar-link" target="_blank">Lihat Toko &nearr;</a>

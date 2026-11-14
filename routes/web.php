@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
@@ -46,6 +47,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/pesanan/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/pesanan/{order:order_code}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 });
 
 
@@ -57,6 +60,9 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->except('show');
         Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->except('show');
+        Route::get('/pesanan', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/pesanan/{order:order_code}', [AdminOrderController::class, 'show'])->name('orders.show');
+        Route::patch('/pesanan/{order:order_code}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
     });
 
 // Webhook Midtrans: dipanggil server Midtrans, jadi tanpa login dan tanpa CSRF.

@@ -95,6 +95,10 @@
         </p>
     @endif
 
-    <p><a href="{{ route('shop.home') }}" class="checkout-back">Kembali ke katalog</a></p>
+        <div class="invoice-actions">
+        <a href="{{ route('orders.invoice', ['order' => $order->order_code]) }}" target="_blank" rel="noopener"
+           class="shop-btn shop-btn-secondary">Lihat invoice</a>
+        <a href="{{ route('orders.index') }}" class="shop-btn shop-btn-secondary">Riwayat pesanan</a>
+    </div>
 </div>
 @endsection

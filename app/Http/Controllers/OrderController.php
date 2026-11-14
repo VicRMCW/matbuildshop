@@ -11,6 +11,17 @@ use Throwable;
 
 class OrderController extends Controller
 {
+    public function index(Request $request): View
+    {
+        // Hanya pesanan milik user yang login; withCount menghindari N+1 untuk jumlah item.
+        $orders = $request->user()->orders()
+            ->withCount('items')
+            ->latest()
+            ->paginate(10);
+
+        return view('orders.index', compact('orders'));
+    }
+
     public function show(
         Request $request,
         Order $order,
@@ -49,5 +60,14 @@ class OrderController extends Controller
         $order->load('items');
 
         return view('orders.show', compact('order', 'snapToken'));
+    }
+
+    public function invoice(Request $request, Order $order): View
+    {
+        abort_unless($order->user_id === $request->user()->id, 403);
+
+        $order->load('items', 'user', 'payments');
+
+        return view('orders.invoice', compact('order'));
     }
 }

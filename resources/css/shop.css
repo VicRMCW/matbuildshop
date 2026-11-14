@@ -1060,3 +1060,98 @@
   background: var(--shop-danger-bg, #FDECEA);
   color: var(--shop-danger, #B42318);
 }
+/* Invoice */
+.invoice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.invoice {
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid var(--shop-border);
+  border-radius: 8px;
+}
+
+.invoice-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--shop-text);
+}
+
+.invoice-brand {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.invoice-sub,
+.invoice-meta p {
+  margin: 0 0 4px;
+}
+
+.invoice-meta {
+  text-align: right;
+}
+
+.invoice-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.invoice-parties {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .invoice-parties {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.invoice-label {
+  margin: 0 0 4px;
+  font-size: 0.875rem;
+  color: var(--shop-text-muted);
+}
+
+.invoice-foot {
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: var(--shop-text-muted);
+}
+
+/* Saat dicetak: sembunyikan navigasi dan tombol, tampilkan invoice saja */
+@media print {
+  header,
+  nav,
+  footer,
+  .no-print,
+  .flash-alert {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
+  .shop-container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .invoice {
+    border: 0;
+    padding: 0;
+  }
+}

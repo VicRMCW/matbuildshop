@@ -48,6 +48,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('orders.index') }}" class="shop-nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+                                    Pesanan Saya
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('profile.edit') }}" class="shop-nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                                     {{ auth()->user()->name }}
                                 </a>

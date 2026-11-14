@@ -508,3 +508,59 @@ textarea.input {
     color: #FFFFFF;
     font-weight: 600;
 }
+/* Filter daftar pesanan dan aksi status */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.filter-bar .field {
+  margin: 0;
+}
+
+.filter-bar .input {
+  min-width: 200px;
+}
+
+.status-action {
+  margin-top: 16px;
+}
+
+.status-action form {
+  margin: 0;
+}
+/* Tabel admin: latar putih dan bingkai agar terpisah dari latar halaman */
+.table {
+  background: #ffffff;
+  border: 1px solid #C9C4B9;
+}
+
+.table thead th {
+  background: #EFEBE4;
+  border-bottom: 1px solid #C9C4B9;
+}
+
+.table tbody td,
+.table tfoot td {
+  border-bottom: 1px solid #E3DFD6;
+}
+
+.table tbody tr:hover {
+  background: #FAF8F4;
+}
+
+.table tfoot td {
+  background: #F8F6F1;
+}
+
+/* Kode, tanggal, dan nominal tidak boleh terpotong ke baris kedua */
+.cell-nowrap {
+  white-space: nowrap;
+}
+
+.order-badge {
+  white-space: nowrap;
+}
