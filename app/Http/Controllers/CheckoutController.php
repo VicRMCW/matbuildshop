@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -15,6 +16,8 @@ use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
+    // ---- Checkout dari keranjang ----
+
     public function index(Request $request): View|RedirectResponse
     {
         $items = $request->user()->cartItems()->with('product')->get();
@@ -42,20 +45,104 @@ class CheckoutController extends Controller
 
     public function store(StoreCheckoutRequest $request): RedirectResponse
     {
+        return $this->placeOrder($request, 'cart');
+    }
+
+    // ---- Beli sekarang (tanpa melalui keranjang) ----
+
+    public function startDirect(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'product_id' => ['required', 'integer'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:999'],
+        ]);
+
+        $product = Product::active()->findOrFail($data['product_id']);
+
+        if ($data['quantity'] > $product->stock) {
+            return back()->with('error', "Stok tersisa {$product->stock}.");
+        }
+
+        // Disimpan di session, terpisah dari keranjang. Dicek ulang saat pesanan dibuat.
+        $request->session()->put('direct_checkout', [
+            'product_id' => $product->id,
+            'quantity' => (int) $data['quantity'],
+        ]);
+
+        return redirect()->route('checkout.direct');
+    }
+
+    public function direct(Request $request): Response|RedirectResponse
+    {
+        $direct = $request->session()->get('direct_checkout');
+
+        if (! $direct) {
+            return redirect()->route('shop.home')
+                ->with('error', 'Tidak ada produk untuk dibeli. Pilih produk terlebih dahulu.');
+        }
+
+        $product = Product::active()->find($direct['product_id']);
+
+        if (! $product || $direct['quantity'] > $product->stock) {
+            $request->session()->forget('direct_checkout');
+
+            return redirect()->route('shop.home')
+                ->with('error', 'Produk tidak tersedia atau stok berubah. Silakan pilih lagi.');
+        }
+
+        $quantity = $direct['quantity'];
+        $total = $product->price * $quantity;
+
+        // Bentuknya disamakan dengan item keranjang agar view checkout dipakai ulang.
+        $items = collect([(object) [
+            'product' => $product,
+            'quantity' => $quantity,
+            'subtotal' => $total,
+        ]]);
+
+        return response()->view('checkout.index', [
+            'items' => $items,
+            'total' => $total,
+            'formAction' => route('checkout.direct.store'),
+            'backUrl' => route('shop.products.show', ['product' => $product->slug]),
+            'backLabel' => 'Kembali ke produk',
+            ])->header('Cache-Control', 'no-store, max-age=0');
+    }
+
+    public function storeDirect(StoreCheckoutRequest $request): RedirectResponse
+    {
+        return $this->placeOrder($request, 'direct');
+    }
+
+    // ---- Pembuatan pesanan (dipakai kedua jalur) ----
+
+    private function placeOrder(StoreCheckoutRequest $request, string $source): RedirectResponse
+    {
         $user = $request->user();
         $data = $request->validated();
+        $direct = $request->session()->get('direct_checkout');
+
+        if ($source === 'direct' && ! $direct) {
+            return redirect()->route('shop.home')
+                ->with('error', 'Tidak ada produk untuk dibeli. Pilih produk terlebih dahulu.');
+        }
 
         try {
-            $order = DB::transaction(function () use ($user, $data) {
-                $cartItems = CartItem::where('user_id', $user->id)->get();
+            $order = DB::transaction(function () use ($user, $data, $source, $direct) {
+                // Sumber barang: seluruh keranjang, atau satu produk dari "Beli sekarang".
+                $wanted = $source === 'cart'
+                    ? CartItem::where('user_id', $user->id)->get()->map(
+                        fn ($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
+                    )
+                    : collect([$direct]);
 
-                if ($cartItems->isEmpty()) {
+                if ($wanted->isEmpty()) {
                     throw new DomainException('Keranjangmu masih kosong.');
                 }
 
                 // Baris produk dikunci sampai transaksi selesai, supaya dua pembeli
                 // tidak bisa mengambil stok terakhir yang sama secara bersamaan.
-                $products = Product::whereIn('id', $cartItems->pluck('product_id'))
+                $products = Product::whereIn('id', $wanted->pluck('product_id'))
                     ->lockForUpdate()
                     ->get()
                     ->keyBy('id');
@@ -63,24 +150,24 @@ class CheckoutController extends Controller
                 $total = 0;
                 $lines = [];
 
-                foreach ($cartItems as $cartItem) {
-                    $product = $products->get($cartItem->product_id);
+                foreach ($wanted as $want) {
+                    $product = $products->get($want['product_id']);
 
                     if (! $product || ! $product->is_active) {
-                        throw new DomainException('Ada produk yang sudah tidak tersedia. Periksa keranjangmu.');
+                        throw new DomainException('Ada produk yang sudah tidak tersedia. Silakan periksa lagi.');
                     }
 
-                    if ($cartItem->quantity > $product->stock) {
+                    if ($want['quantity'] > $product->stock) {
                         throw new DomainException("Stok {$product->name} tersisa {$product->stock}.");
                     }
 
                     // Harga selalu dari database; form checkout tidak membawa harga atau total.
-                    $subtotal = $product->price * $cartItem->quantity;
+                    $subtotal = $product->price * $want['quantity'];
                     $total += $subtotal;
 
                     $lines[] = [
                         'product' => $product,
-                        'quantity' => $cartItem->quantity,
+                        'quantity' => $want['quantity'],
                         'subtotal' => $subtotal,
                     ];
                 }
@@ -110,13 +197,24 @@ class CheckoutController extends Controller
                     $product->decrement('stock', $line['quantity']);
                 }
 
-                CartItem::where('user_id', $user->id)->delete();
+                // Keranjang hanya dikosongkan bila pesanan berasal dari keranjang.
+                if ($source === 'cart') {
+                    CartItem::where('user_id', $user->id)->delete();
+                }
 
                 return $order;
             });
         } catch (DomainException $e) {
-            return redirect()->route('cart.index')->with('error', $e->getMessage());
+            if ($source === 'direct') {
+                $request->session()->forget('direct_checkout');
+            }
+
+            return redirect()
+                ->route($source === 'cart' ? 'cart.index' : 'shop.home')
+                ->with('error', $e->getMessage());
         }
+
+        $request->session()->forget('direct_checkout');
 
         return redirect()
             ->route('orders.show', ['order' => $order->order_code])

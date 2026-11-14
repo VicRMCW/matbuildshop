@@ -1155,3 +1155,8 @@
     padding: 0;
   }
 }
+.add-to-cart-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

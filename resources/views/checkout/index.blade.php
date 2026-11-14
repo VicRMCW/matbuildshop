@@ -10,7 +10,7 @@
     <h1 class="cart-heading">Checkout</h1>
 
     <div class="cart-layout">
-        <form method="POST" action="{{ route('checkout.store') }}" class="card" id="checkout-form">
+        <form method="POST" action="{{ $formAction ?? route('checkout.store') }}" class="card" id="checkout-form">
             @csrf
             <h2 class="card-title">Data penerima</h2>
 
@@ -72,7 +72,7 @@
             <p class="checkout-note">
                 Total dihitung ulang oleh server saat pesanan dibuat.
             </p>
-            <a href="{{ route('cart.index') }}" class="checkout-back">Kembali ke keranjang</a>
+            <a href="{{ $backUrl ?? route('cart.index') }}" class="checkout-back">{{ $backLabel ?? 'Kembali ke keranjang' }}</a>
         </aside>
     </div>
 </div>

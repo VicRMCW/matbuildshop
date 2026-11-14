@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);
+         $middleware->appendToGroup('web', \App\Http\Middleware\ClearDirectCheckout::class);
          $middleware->validateCsrfTokens(except: ['midtrans/notification']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

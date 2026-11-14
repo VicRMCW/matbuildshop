@@ -71,7 +71,12 @@
                                        min="1" max="{{ $product->stock }}" required>
                             </div>
 
-                            <button type="submit" class="shop-btn shop-btn-primary">Tambah ke keranjang</button>
+                              <div class="add-to-cart-actions">
+                                <button type="submit" class="shop-btn shop-btn-secondary">Tambah ke keranjang</button>
+                                <button type="submit" formaction="{{ route('checkout.direct.start') }}" class="shop-btn shop-btn-primary">
+                                    Beli sekarang
+                                </button>
+                            </div>
                         </form>
                     @endif
                 @else
