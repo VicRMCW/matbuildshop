@@ -123,3 +123,11 @@ Hasil `migrate:fresh --seed`: semua seeder `DONE`, tinker konfirmasi 3/6/18 bari
 - Routes `routes/web.php`: `GET /` diarahkan ke `ShopController@home` dengan nama `shop.home`, dan `GET /katalog` diarahkan ke `ShopController@index` dengan nama `shop.catalog`.
 - Dibuat view sementara `resources/views/shop/landing.blade.php` bertuliskan "Beranda" untuk pengujian.
 - Migrasi tautan di seluruh project: tautan katalog, form pencarian, filter kategori, breadcrumb katalog, dan tombol "Lihat katalog" diganti ke `shop.catalog`. Tautan logo brand, redirect login/register, dan error redirect dipertahankan ke `shop.home`.
+
+### feat: add landing page view
+- Mengisi `resources/views/shop/landing.blade.php` dengan struktur:
+  1. Hero section: H1 "Bahan dan alat bangunan dalam satu toko", paragraf keterangan jelas, form pencarian GET ke `shop.catalog` dengan input search & tombol Cari 48px, label tersembunyi aksesibel (`.visually-hidden`).
+  2. Kategori section: H2 "Kategori", kisi kotak kategori (2 kolom mobile, 3 tablet, 6 desktop), tautan kotak ke filter katalog, avatar gambar 80x80px bundar atau inisial huruf pertama, nama kategori, dan jumlah produk aktif.
+  3. Produk terbaru section: H2 "Produk terbaru", tautan "Lihat semua produk" ke `shop.catalog`, kisi produk (2 kolom mobile, 3 tablet, 4 desktop) menggunakan ulang partial `shop._card`.
+- Menambahkan kelas CSS komponen di `resources/css/shop.css` menggunakan variabel warna `--shop-*` tanpa utilitas Tailwind inline, dengan jarak antar section 48px dan transisi border tipis.
+- Build asset frontend berhasil dikompilasi via `npm run build`.
