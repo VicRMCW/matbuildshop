@@ -13,10 +13,22 @@
 
 <div class="search-bar">
     <form method="GET" action="{{ route('admin.products.index') }}" class="search-form">
-        <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama produk bangunan..." class="search-input">
+        <input
+            type="text"
+            name="search"
+            value="{{ $search }}"
+            placeholder="Cari nama produk atau kategori..."
+            class="search-input"
+        >
+
         <button type="submit" class="btn btn-secondary">Cari</button>
+
         @if($search)
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary" style="padding: 0 16px;">Reset</a>
+            <a href="{{ route('admin.products.index') }}"
+               class="btn btn-secondary"
+               style="padding: 0 16px;">
+                Reset
+            </a>
         @endif
     </form>
 </div>

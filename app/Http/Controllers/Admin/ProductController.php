@@ -22,7 +22,14 @@ class ProductController extends Controller
         // Eager load category untuk mencegah masalah query N+1 pada daftar tabel.
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%");
+                if ($search) {
+                    $query->where(function ($q) use ($search) { 
+                        $q->where('name', 'like', '%' . $search . '%')
+                        ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                            $categoryQuery->where('name', 'like', '%' . $search . '%');
+                        });
+                    });
+                }
             })
             ->latest('id')
             ->paginate(10)
