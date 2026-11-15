@@ -47,6 +47,10 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         // Checkout dan pesanan
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+        // Beli sekarang (tanpa keranjang)
+    Route::post('/beli-langsung', [CheckoutController::class, 'startDirect'])->name('checkout.direct.start');
+    Route::get('/checkout/langsung', [CheckoutController::class, 'direct'])->name('checkout.direct');
+    Route::post('/checkout/langsung', [CheckoutController::class, 'storeDirect'])->name('checkout.direct.store');
     Route::get('/pesanan/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pesanan/{order:order_code}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
