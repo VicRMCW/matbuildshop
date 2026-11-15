@@ -72,7 +72,13 @@
             <p class="checkout-note">
                 Total dihitung ulang oleh server saat pesanan dibuat.
             </p>
-            <a href="{{ $backUrl ?? route('cart.index') }}" class="checkout-back">{{ $backLabel ?? 'Kembali ke keranjang' }}</a>
+            <button
+                type="button"
+                class="shop-btn-back"
+                onclick="window.location.href='{{ $backUrl ?? route('cart.index') }}'">
+                <span>&larr;</span>
+                <span>{{ $backLabel ?? 'Kembali ke keranjang' }}</span>
+            </button>
         </aside>
     </div>
 </div>

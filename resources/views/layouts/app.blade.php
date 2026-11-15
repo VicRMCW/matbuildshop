@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
+<!-- Moving Text -->
+    <div class="moving-bar">
+        <div class="moving-text">
+            Welcome to Our Website! Enjoy Shopping and Discover Our Latest Tools!
+        </div>
+    </div>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -41,7 +41,7 @@
     background: #FFFFFF;
     border-bottom: 1px solid var(--shop-border);
     position: sticky;
-    top: 0;
+    top: 40px;
     z-index: 40;
 }
 
@@ -1385,4 +1385,69 @@
 .category-tile-count {
   font-size: 0.875rem;
   color: var(--shop-text-muted);
+}
+
+/* Announcement Bar */
+.announcement-bar {
+    width: 100%;
+    overflow: hidden;
+    background-color: #f8d7e8;
+    color: #333;
+    padding: 10px 0;
+    white-space: nowrap;
+}
+
+
+/* Moving Text Container */
+.moving-bar {
+   position: sticky;
+    top: 0;
+    z-index: 50;
+
+    overflow: hidden;
+    white-space: nowrap; 
+    width: 100%;
+    background-color: #C85E1B;
+    padding: 8px 0;
+}
+/* Moving Text */
+.moving-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: moveText 15s linear infinite;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--shop-bg);
+}
+
+@keyframes moveText {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Tombol Kembali */
+.shop-btn-back {
+    display: inline-flex;        
+    align-items: center;
+    gap: 8px;                     
+    margin-top: 20px;             
+    padding: 8px 14px;
+    font-size: 0.875rem;          
+    font-weight: 500;
+    color: #57534e;               
+    background-color: transparent;
+    border: 1px solid #d6d3d1;    
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.shop-btn-back:hover {
+    background-color: #f5f5f4;
+    color: #1c1917;
+    border-color: #a8a29e;
 }
