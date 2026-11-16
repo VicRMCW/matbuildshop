@@ -1,3 +1,4 @@
+```php
 @extends('layouts.app', ['title' => 'Masuk - MatbuildShop'])
 
 @section('content')
@@ -19,7 +20,30 @@
 
             <div class="form-group">
                 <label for="password">Kata Sandi</label>
-                <input type="password" id="password" name="password" required>
+
+                <div style="position: relative;">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        style="width: 100%; padding-right: 45px;"
+                    >
+
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        aria-label="Tampilkan password"
+                        aria-pressed="false"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 5px; color: #666;"
+                    >
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+
                 @error('password')
                     <div class="field-error">{{ $message }}</div>
                 @enderror
@@ -38,4 +62,25 @@
         </p>
     </div>
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const password = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const isHidden = password.type === 'password';
+
+        password.type = isHidden ? 'text' : 'password';
+
+        this.setAttribute('aria-pressed', isHidden);
+        this.setAttribute(
+            'aria-label',
+            isHidden ? 'Sembunyikan password' : 'Tampilkan password'
+        );
+
+        eyeIcon.innerHTML = isHidden
+            ? '<path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.9 5.2A11 11 0 0112 5c6.4 0 10 7 10 7a14 14 0 01-3.1 3.8"/><path d="M6.2 6.2A15 15 0 002 12s3.6 7 10 7a10 10 0 004-.8"/>'
+            : '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>';
+    });
+</script>
 @endsection
+```
