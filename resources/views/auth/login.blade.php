@@ -1,4 +1,3 @@
-```php
 @extends('layouts.app', ['title' => 'Masuk - MatbuildShop'])
 
 @section('content')
@@ -83,4 +82,3 @@
     });
 </script>
 @endsection
-```
