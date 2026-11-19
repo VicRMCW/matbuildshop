@@ -45,6 +45,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
 
         // Checkout dan pesanan
+        // Menyimpan pilihan produk dari keranjang
+    Route::post('/checkout/pilih', [CheckoutController::class, 'prepare'])
+        ->name('checkout.prepare');
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
         // Beli sekarang (tanpa keranjang)

@@ -12,27 +12,40 @@ class CartController extends Controller
 {
     public function index(Request $request): View
     {
-        $items = $request->user()->cartItems()->with('product')->latest()->get();
+        $items = $request->user()
+            ->cartItems()
+            ->with('product')
+            ->latest()
+            ->get();
 
-        // Produk yang dihapus atau dinonaktifkan admin tidak bisa dibeli lagi,
-        // jadi dibersihkan dari keranjang agar total tidak menyesatkan.
+        // Hapus produk yang sudah tidak tersedia.
         $unavailable = $items->filter(
             fn ($item) => ! $item->product || ! $item->product->is_active
         );
 
         if ($unavailable->isNotEmpty()) {
             CartItem::whereIn('id', $unavailable->pluck('id'))->delete();
+
             $items = $items->reject(
                 fn ($item) => $unavailable->contains('id', $item->id)
             );
         }
 
-        // Total dihitung dari harga produk saat ini, bukan dari input browser.
-        $total = $items->sum(fn ($item) => $item->product->price * $item->quantity);
+        // Tandai produk yang jumlahnya melebihi stok.
+        $items->each(function ($item) {
+            $item->setAttribute(
+                'checkout_stock_ok',
+                $item->quantity <= $item->product->stock
+            );
+        });
 
-        // Admin bisa menurunkan stok setelah barang masuk keranjang.
+        // Total semua produk sebelum pelanggan memilih.
+        $total = $items->sum(
+            fn ($item) => $item->subtotal
+        );
+
         $hasStockProblem = $items->contains(
-            fn ($item) => $item->quantity > $item->product->stock
+            fn ($item) => ! $item->checkout_stock_ok
         );
 
         return view('cart.index', [
@@ -50,14 +63,12 @@ class CartController extends Controller
             'quantity' => ['required', 'integer', 'min:1', 'max:999'],
         ]);
 
-        // Produk yang di-soft-delete tidak ditemukan; active() menolak yang nonaktif.
         $product = Product::active()->findOrFail($data['product_id']);
 
         if ($product->stock < 1) {
             return back()->with('error', 'Stok produk ini habis.');
         }
 
-        // Satu baris per (user, produk); menambah lagi berarti menambah jumlah.
         $item = CartItem::firstOrNew([
             'user_id' => $request->user()->id,
             'product_id' => $product->id,
@@ -81,8 +92,10 @@ class CartController extends Controller
 
     public function update(Request $request, CartItem $cartItem): RedirectResponse
     {
-        // Mencegah user mengubah keranjang milik orang lain.
-        abort_unless($cartItem->user_id === $request->user()->id, 403);
+        abort_unless(
+            $cartItem->user_id === $request->user()->id,
+            403
+        );
 
         $data = $request->validate([
             'quantity' => ['required', 'integer', 'min:1', 'max:999'],
@@ -98,17 +111,25 @@ class CartController extends Controller
         }
 
         if ($data['quantity'] > $product->stock) {
-            return back()->with('error', "Stok {$product->name} tersisa {$product->stock}.");
+            return back()->with(
+                'error',
+                "Stok {$product->name} tersisa {$product->stock}."
+            );
         }
 
-        $cartItem->update(['quantity' => $data['quantity']]);
+        $cartItem->update([
+            'quantity' => $data['quantity']
+        ]);
 
         return back();
     }
 
     public function destroy(Request $request, CartItem $cartItem): RedirectResponse
     {
-        abort_unless($cartItem->user_id === $request->user()->id, 403);
+        abort_unless(
+            $cartItem->user_id === $request->user()->id,
+            403
+        );
 
         $cartItem->delete();
 
