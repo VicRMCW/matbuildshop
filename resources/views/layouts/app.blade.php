@@ -3,7 +3,10 @@
 <!-- Moving Text -->
     <div class="moving-bar">
         <div class="moving-text">
-            Welcome to Our Website! Enjoy Shopping and Discover Our Latest Tools!
+            <span>✨ Welcome! We are glad you are here!</span>
+            <span>⭐ Discover something useful!</span>
+            <span>🛍️ Explore our products!</span>
+            <span>💌 Need help? Feel free to contact our team!</span>
         </div>
     </div>
 <head>
