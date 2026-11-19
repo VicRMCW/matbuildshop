@@ -96,4 +96,17 @@
         @yield('content')
     </main>
 </body>
+
+<footer class="site-footer">
+    <h3>Contact Information</h3>
+
+    <p>Email: MatBuildShop@email.com</p>
+    <p>Phone: 08217724045</p>
+    <p>Address: Bengkulu, Indonesia</p>
+
+    <div class="footer-bottom">
+        &copy; 2026 MatBuildShop. All Rights Reserved.
+    </div>
+</footer>
+
 </html>
