@@ -21,6 +21,7 @@ class ProductSeeder extends Seeder
                 'price'    => 68000,
                 'stock'    => 80,
                 'desc'     => 'Semen portland tipe I untuk konstruksi umum: pondasi, kolom, dan plat lantai. Kuat tekan mencapai 42 MPa pada umur 28 hari.',
+                'image'    => 'products/qf4tv2ZHOMC9PUc4OTGDxoGEmFFAoqDT1aznX12T.jpg',
             ],
             [
                 'category' => 'semen-perekat',
@@ -28,6 +29,7 @@ class ProductSeeder extends Seeder
                 'price'    => 85000,
                 'stock'    => 60,
                 'desc'     => 'Mortar siap pakai untuk plesteran dinding interior dan eksterior. Tebal aplikasi 10-15 mm per lapis, waktu setting sekitar 3 jam.',
+                'image'    => 'products/IMR0U5mCxqjn1HkBDCcappSaUiQKjxyhIdnBbhOv.jpg',
             ],
             [
                 'category' => 'semen-perekat',
@@ -35,6 +37,7 @@ class ProductSeeder extends Seeder
                 'price'    => 72000,
                 'stock'    => 50,
                 'desc'     => 'Perekat berbasis semen modifikasi polimer untuk pemasangan keramik dan granit ukuran hingga 60x60 cm. Cocok untuk lantai basah dan dinding luar.',
+                'image'    => 'products/EKvklN1nO9760JVRxR1VcyT3v1TdDitGGI7Y2xUF.jpg',
             ],
 
             // Besi & Baja
@@ -44,6 +47,7 @@ class ProductSeeder extends Seeder
                 'price'    => 95000,
                 'stock'    => 100,
                 'desc'     => 'Besi beton polos diameter 10 mm panjang 12 meter, baja tulangan BJTP 24. Digunakan untuk rangkaian kolom praktis dan balok anak.',
+                'image'    => 'products/fiaT90wzbXBHVCkaZg0M10CsiJnunaySkfRQXfOF.webp',
             ],
             [
                 'category' => 'besi-baja',
@@ -51,6 +55,7 @@ class ProductSeeder extends Seeder
                 'price'    => 148000,
                 'stock'    => 75,
                 'desc'     => 'Besi beton ulir diameter 13 mm panjang 12 meter, baja tulangan BJTD 40. Daya lekat lebih tinggi dibanding polos, cocok untuk balok utama.',
+                'image'    => 'products/JbN3urx6psGIboGPVeoQeyizxbwcxLiGucPBAT64.jpg',
             ],
             [
                 'category' => 'besi-baja',
@@ -58,6 +63,7 @@ class ProductSeeder extends Seeder
                 'price'    => 87000,
                 'stock'    => 60,
                 'desc'     => 'Profil baja ringan tipe C75 tebal 0,75 mm panjang 6 meter untuk rangka atap. Dilapisi galvanis untuk mencegah korosi di lingkungan lembap.',
+                'image'    => 'products/6Q12Am0VUQTLut3f4coxiXhtsSxM29Vr1L0J3hjJ.jpg',
             ],
 
             // Cat & Pelapis
@@ -67,6 +73,7 @@ class ProductSeeder extends Seeder
                 'price'    => 115000,
                 'stock'    => 40,
                 'desc'     => 'Cat emulsi akrilik untuk tembok interior, daya sebar 8-10 m2 per kg dengan 2 lapis. Tahan noda dan mudah dibersihkan dengan kain lembap.',
+                'image'    => 'products/HQm6mTHGF9BkyYUpBPxelw8ZI2yYdwBsuZQGmNVo.jpg',
             ],
             [
                 'category' => 'cat-pelapis',
@@ -74,6 +81,7 @@ class ProductSeeder extends Seeder
                 'price'    => 148000,
                 'stock'    => 35,
                 'desc'     => 'Cat berbasis akrilik elastomerik untuk fasad eksterior, tahan cuaca dan sinar UV. Memiliki sifat elastis yang menutup retakan rambut hingga 0,3 mm.',
+                'image'    => 'products/D5IZLUudKVa2lim7rdXSaEgWpHgEj04QNNBhycFp.webp',
             ],
             [
                 'category' => 'cat-pelapis',
@@ -81,6 +89,7 @@ class ProductSeeder extends Seeder
                 'price'    => 195000,
                 'stock'    => 25,
                 'desc'     => 'Pelapis berbasis bitumen untuk atap dak beton dan pondasi bawah tanah. Fleksibel saat kering, tahan retak akibat pergerakan struktur ringan.',
+                'image'    => 'products/lacEGXstXKeyOHVLGZk2Z5IReigcP19OZrE68Xp6.jpg',
             ],
 
             // Pipa & Sanitasi
@@ -90,6 +99,7 @@ class ProductSeeder extends Seeder
                 'price'    => 32000,
                 'stock'    => 90,
                 'desc'     => 'Pipa PVC tipe AW diameter 1/2 inci panjang 4 meter untuk instalasi air bersih bertekanan. Tekanan kerja maksimal 10 bar pada suhu 25 derajat Celsius.',
+                'image'    => 'products/ZqUtYMY1qViNDfjPrqRE2fVvhTIoOmhRLfblP9KP.jpg',
             ],
             [
                 'category' => 'pipa-sanitasi',
@@ -97,6 +107,7 @@ class ProductSeeder extends Seeder
                 'price'    => 95000,
                 'stock'    => 50,
                 'desc'     => 'Pipa PVC tipe D diameter 4 inci untuk saluran buangan dan drainase. Dinding lebih tipis dari tipe AW, dirancang untuk sistem gravitasi tanpa tekanan.',
+                'image'    => 'products/sgRcAbMUcmY7KLqAyPtV4BM914WlodNFVUdfGlTw.webp',
             ],
             [
                 'category' => 'pipa-sanitasi',
@@ -104,6 +115,7 @@ class ProductSeeder extends Seeder
                 'price'    => 875000,
                 'stock'    => 15,
                 'desc'     => 'Kloset duduk keramik vitreous china kapasitas flush 6 liter. Dilengkapi tangki tanam, dudukan slow-close, dan sertifikasi SNI.',
+                'image'    => 'products/Om9v2cmLenJQ2VQyHq1GPIU89l4FVUZv3NKT56oe.jpg',
             ],
 
             // Alat Tangan
@@ -113,6 +125,7 @@ class ProductSeeder extends Seeder
                 'price'    => 18500,
                 'stock'    => 85,
                 'desc'     => 'Obeng kepala plus ukuran PH2, panjang gagang 150 mm. Mata terbuat dari baja CrV, gagang ergonomis anti-selip untuk momen putar maksimal.',
+                'image'    => 'products/xKx67chXLS3BMNJNcV3zDjfb80s7D75BSwUvpvaf.png',
             ],
             [
                 'category' => 'alat-tangan',
@@ -120,6 +133,7 @@ class ProductSeeder extends Seeder
                 'price'    => 42000,
                 'stock'    => 60,
                 'desc'     => 'Palu kepala besi tuang berat 500 gram dengan gagang kayu keras panjang 300 mm. Cocok untuk pekerjaan bekisting, pemasangan paku, dan pembongkaran ringan.',
+                'image'    => 'products/pGGrjzEWloI2Gt1t6ItKhdqLYq83XmE3qtHp4GY5.png',
             ],
             [
                 'category' => 'alat-tangan',
@@ -127,6 +141,7 @@ class ProductSeeder extends Seeder
                 'price'    => 35000,
                 'stock'    => 70,
                 'desc'     => 'Meteran pita baja lebar 19 mm panjang 5 meter dengan kunci otomatis. Skala milimeter di kedua sisi pita, casing ABS tahan benturan.',
+                'image'    => 'products/5QD9mlJV5tFkyYW6srxzWE9cfvIKJ5NyQbGWHQR4.webp',
             ],
 
             // Alat Listrik
@@ -136,6 +151,7 @@ class ProductSeeder extends Seeder
                 'price'    => 285000,
                 'stock'    => 20,
                 'desc'     => 'Bor genggam daya 500 watt, chuck 10 mm, kecepatan tanpa beban 0-2800 rpm. Cocok untuk mengebor beton ringan, kayu, dan besi dengan mata bor yang sesuai.',
+                'image'    => 'products/DHgh3frl0GCCiSnT4Wy1lP2K9N5hj9qhC9BS5QRn.png',
             ],
             [
                 'category' => 'alat-listrik',
@@ -143,6 +159,7 @@ class ProductSeeder extends Seeder
                 'price'    => 325000,
                 'stock'    => 15,
                 'desc'     => 'Gerinda sudut daya 650 watt untuk batu gerinda atau disc potong diameter 100 mm. Kecepatan tanpa beban 11000 rpm, pelindung percikan dapat diputar 180 derajat.',
+                'image'    => 'products/e4VKhxZh15kT4LfTR9OiDlJ7TRFf7KSQNRXTdO2w.jpg',
             ],
             [
                 'category' => 'alat-listrik',
@@ -150,22 +167,25 @@ class ProductSeeder extends Seeder
                 'price'    => 158000,
                 'stock'    => 30,
                 'desc'     => 'Lampu sorot LED daya 50 watt dengan fluks cahaya 4500 lumen, suhu warna 6500K. Dilengkapi kabel 2 meter dan tripod lipat setinggi 1,5 meter.',
+                'image'    => 'products/I6eBagHonEAeM8qs77iejkxHY7UA424UncOVQRqE.jpg',
             ],
         ];
 
         foreach ($products as $data) {
             $category = Category::where('slug', $data['category'])->firstOrFail();
 
-            Product::create([
-                'category_id' => $category->id,
-                'name'        => $data['name'],
-                'slug'        => Str::slug($data['name']),
-                'description' => $data['desc'],
-                'price'       => $data['price'],
-                'stock'       => $data['stock'],
-                'image'       => null,
-                'is_active'   => true,
-            ]);
+            Product::updateOrCreate(
+                ['slug' => Str::slug($data['name'])],
+                [
+                    'category_id' => $category->id,
+                    'name'        => $data['name'],
+                    'description' => $data['desc'],
+                    'price'       => $data['price'],
+                    'stock'       => $data['stock'],
+                    'image'       => $data['image'] ?? null,
+                    'is_active'   => true,
+                ]
+            );
         }
     }
 }
